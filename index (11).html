@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מאגר התוצרים של חני בלוי</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Suez+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bordo:#7D1C2A; --bordo-soft:#9B3D47; --gold:#C89B3C; --olive:#5C6228;
+  --cream:#FAF6EF; --paper:#FFFDF9; --ink:#3A2E2A; --muted:#8A7B72;
+  --shadow:0 10px 30px rgba(125,28,42,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Frank Ruhl Libre',serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background:radial-gradient(ellipse 600px 400px at 85% -5%, rgba(200,155,60,.14), transparent 60%),
+             radial-gradient(ellipse 700px 500px at -10% 20%, rgba(155,61,71,.10), transparent 60%),
+             radial-gradient(ellipse 500px 400px at 110% 75%, rgba(92,98,40,.10), transparent 60%)}
+.wrap{position:relative;z-index:1;max-width:1150px;margin:0 auto;padding:0 16px}
+
+/* ======= כותרת עליונה ======= */
+header{text-align:center;padding:26px 12px 8px;position:relative}
+.branch{position:absolute;opacity:.55;width:110px;pointer-events:none}
+.branch.r{top:12px;right:-8px;transform:rotate(12deg)}
+.branch.l{top:12px;left:-8px;transform:scaleX(-1) rotate(12deg)}
+header img.logo{width:118px;height:118px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(125,28,42,.18));animation:pop .8s ease}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+h1{font-family:'Suez One',serif;color:var(--bordo);font-size:clamp(1.7rem,5.5vw,2.6rem);margin-top:8px;letter-spacing:.5px}
+.tagline{color:var(--olive);font-size:clamp(1rem,3.4vw,1.15rem);margin-top:6px;font-weight:500}
+.gold-line{width:120px;height:3px;margin:14px auto 0;border-radius:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.about-btn{margin-top:12px;display:inline-block;background:none;border:1.5px solid var(--gold);color:var(--bordo);
+  font-family:inherit;font-size:1rem;font-weight:500;padding:7px 26px;border-radius:30px;cursor:pointer;transition:.25s}
+.about-btn:hover{background:var(--gold);color:#fff}
+
+/* ======= סרגל דביק: חיפוש וסינון ======= */
+.toolbar{position:sticky;top:0;z-index:50;background:rgba(250,246,239,.92);backdrop-filter:blur(8px);
+  padding:12px 0 10px;border-bottom:1px solid rgba(200,155,60,.30)}
+.search-row{display:flex;gap:8px;align-items:center}
+.home-btn{flex:0 0 auto;width:42px;height:42px;border-radius:12px;border:1.5px solid rgba(125,28,42,.25);
+  background:var(--paper);cursor:pointer;font-size:1.15rem;line-height:1;transition:.2s;color:var(--bordo)}
+.home-btn:hover{background:var(--bordo);color:#fff}
+.search-box{flex:1;position:relative}
+.search-box input{width:100%;padding:11px 42px 11px 14px;border:1.5px solid rgba(125,28,42,.25);border-radius:14px;
+  font-family:inherit;font-size:1.05rem;background:var(--paper);color:var(--ink);transition:.25s}
+.search-box input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.18)}
+.search-box .mag{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:1.05rem;pointer-events:none}
+.filters{display:flex;gap:8px;margin-top:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters select{flex:1;min-width:110px;padding:8px 10px;border:1.5px solid rgba(92,98,40,.30);border-radius:11px;
+  font-family:inherit;font-size:.92rem;background:var(--paper);color:var(--ink);cursor:pointer}
+.filters select:focus{outline:none;border-color:var(--olive)}
+.count-line{font-size:.86rem;color:var(--muted);margin-top:7px;min-height:1.1em}
+.count-line b{color:var(--bordo)}
+.clear-btn{background:none;border:none;color:var(--bordo);font-family:inherit;font-size:.86rem;cursor:pointer;text-decoration:underline;margin-inline-start:8px}
+
+/* ======= אשכולות וכרטיסים ======= */
+.cluster{margin:30px 0 6px}
+.cluster-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.cluster-icon{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.35rem;background:radial-gradient(circle at 30% 30%, #fff, rgba(200,155,60,.25));
+  border:1.5px solid rgba(200,155,60,.5);box-shadow:0 3px 8px rgba(125,28,42,.10)}
+.cluster-head h2{font-family:'Suez One',serif;color:var(--bordo);font-size:clamp(1.2rem,4vw,1.5rem);font-weight:400}
+.cluster-head .n{color:var(--muted);font-size:.9rem;font-family:'Frank Ruhl Libre',serif;margin-top:4px}
+.cluster-head::after{content:"";flex:1;height:1.5px;background:linear-gradient(90deg,rgba(200,155,60,.5),transparent);margin-inline-start:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:12px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}}
+.card{background:var(--paper);border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid rgba(125,28,42,.09);
+  box-shadow:0 3px 12px rgba(58,46,42,.07);transition:transform .22s, box-shadow .22s;display:flex;flex-direction:column;
+  animation:rise .5s ease backwards}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.thumb{aspect-ratio:16/10;width:100%;background:#eee;position:relative;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .fb{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;padding:10px;text-align:center}
+.thumb .fb .fi{font-size:1.7rem;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2))}
+.thumb .fb .ft{font-family:'Suez One',serif;font-size:.9rem;line-height:1.25;text-shadow:0 1px 3px rgba(0,0,0,.25)}
+.card-body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:5px;flex:1}
+.card-title{font-weight:700;font-size:.98rem;line-height:1.3;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+.chip{font-size:.72rem;padding:2.5px 9px;border-radius:20px;background:rgba(92,98,40,.10);color:var(--olive);font-weight:500}
+.chip.b{background:rgba(125,28,42,.08);color:var(--bordo)}
+.show-more{display:block;margin:14px auto 0;background:none;border:1.5px solid var(--olive);color:var(--olive);
+  font-family:inherit;font-size:.95rem;font-weight:500;padding:8px 30px;border-radius:30px;cursor:pointer;transition:.25s}
+.show-more:hover{background:var(--olive);color:#fff}
+
+/* ======= מסכי מצב ======= */
+.state{text-align:center;padding:70px 20px;color:var(--muted)}
+.spinner{width:46px;height:46px;border:4px solid rgba(200,155,60,.25);border-top-color:var(--bordo);border-radius:50%;
+  margin:0 auto 18px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err-box{max-width:420px;margin:60px auto;background:var(--paper);border:1.5px solid rgba(125,28,42,.2);border-radius:18px;
+  padding:34px 26px;text-align:center;box-shadow:var(--shadow)}
+.err-box .e{font-size:2.2rem;margin-bottom:10px}
+.err-box h3{font-family:'Suez One',serif;color:var(--bordo);margin-bottom:8px}
+.err-box p{color:var(--muted);line-height:1.6;font-size:.95rem}
+.err-box button{margin-top:16px;background:var(--bordo);color:#fff;border:none;font-family:inherit;font-size:1rem;
+  padding:9px 32px;border-radius:30px;cursor:pointer}
+
+/* ======= חלונית תוצר ======= */
+.overlay{position:fixed;inset:0;background:rgba(58,46,42,.55);backdrop-filter:blur(3px);z-index:100;
+  display:none;align-items:flex-end;justify-content:center}
+@media(min-width:640px){.overlay{align-items:center;padding:24px}}
+.overlay.open{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{background:var(--paper);width:100%;max-width:520px;max-height:92vh;overflow-y:auto;position:relative;
+  border-radius:22px 22px 0 0;animation:up .3s ease}
+@media(min-width:640px){.modal{border-radius:22px}}
+@keyframes up{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}
+.modal .mimg{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#eee}
+.modal .mfb{width:100%;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff}
+.modal .mfb .fi{font-size:2.6rem}.modal .mfb .ft{font-family:'Suez One',serif;font-size:1.2rem;text-shadow:0 1px 3px rgba(0,0,0,.25)}
+.mclose{position:absolute;top:10px;left:10px;width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,253,249,.92);color:var(--bordo);font-size:1.05rem;box-shadow:0 2px 8px rgba(0,0,0,.18);z-index:2}
+.mbody{padding:18px 22px 24px}
+.mbody h3{font-family:'Suez One',serif;color:var(--bordo);font-size:1.35rem;line-height:1.3}
+.mchips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.mdesc{color:var(--ink);line-height:1.65;font-size:.98rem}
+.mdate{color:var(--muted);font-size:.85rem;margin-top:8px}
+.open-btn{display:block;width:100%;margin-top:16px;background:linear-gradient(135deg,var(--bordo),var(--bordo-soft));
+  color:#fff;text-align:center;text-decoration:none;font-family:inherit;font-size:1.1rem;font-weight:700;
+  padding:13px;border-radius:14px;box-shadow:0 5px 14px rgba(125,28,42,.30);transition:.25s}
+.open-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(125,28,42,.4)}
+.mnav{display:flex;justify-content:space-between;margin-top:12px}
+.mnav button{background:none;border:1.5px solid rgba(92,98,40,.4);color:var(--olive);font-family:inherit;font-size:.9rem;
+  padding:7px 16px;border-radius:24px;cursor:pointer;transition:.2s}
+.mnav button:hover:not(:disabled){background:var(--olive);color:#fff}
+.mnav button:disabled{opacity:.35;cursor:default}
+
+/* ======= אודות ======= */
+.about-modal{max-width:460px}
+.about-modal .mbody{text-align:center;padding-top:26px}
+.about-modal img{width:104px;margin:0 auto 10px;display:block}
+.about-modal p{text-align:right;line-height:1.75;color:var(--ink);font-size:.98rem;margin-top:10px}
+
+/* ======= כפתורים צפים ======= */
+.fab{position:fixed;z-index:60;width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 5px 16px rgba(0,0,0,.22);transition:.25s}
+.fab:hover{transform:scale(1.08)}
+.wa{bottom:18px;left:18px;background:#25D366}
+.wa svg{width:28px;height:28px;fill:#fff}
+.top-btn{bottom:18px;right:18px;background:var(--paper);color:var(--bordo);font-size:1.2rem;
+  border:1.5px solid rgba(125,28,42,.25);opacity:0;pointer-events:none}
+.top-btn.show{opacity:1;pointer-events:auto}
+
+footer{text-align:center;padding:40px 16px 90px;color:var(--muted);font-size:.9rem}
+footer .fh{font-family:'Suez One',serif;color:var(--bordo-soft);font-size:1rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <svg class="branch r" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#9B3D47" stroke-width="1.4" opacity=".8"><path d="M5 55 Q40 40 95 8"/><path d="M30 43 q-2 -12 6 -18"/><path d="M50 33 q-1 -11 7 -16"/><path d="M70 22 q0 -10 7 -14"/><circle cx="36" cy="24" r="2.6" fill="#C89B3C" stroke="none"/><circle cx="57" cy="15" r="2.2" fill="#9B3D47" stroke="none"/><circle cx="78" cy="7" r="2.4" fill="#5C6228" stroke="none"/></g></svg>
+  <svg class="branch l" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#5C6228" stroke-width="1.4" opacity=".8"><path d="M5 55 Q40 40 95 8"/><path d="M30 43 q-2 -12 6 -18"/><path d="M50 33 q-1 -11 7 -16"/><path d="M70 22 q0 -10 7 -14"/><circle cx="36" cy="24" r="2.6" fill="#C89B3C" stroke="none"/><circle cx="57" cy="15" r="2.2" fill="#9B3D47" stroke="none"/><circle cx="78" cy="7" r="2.4" fill="#5C6228" stroke="none"/></g></svg>
+  <img class="logo" src="logo.png" alt="חני בלוי - יועצת ומדריכה" onerror="this.style.display='none'">
+  <h1>מאגר התוצרים של חני בלוי</h1>
+  <div class="tagline">כלים, מצגות והשראה ליועצות, מדריכות וצוותי חינוך — במקום אחד 💛</div>
+  <div class="gold-line"></div>
+  <button class="about-btn" onclick="openAbout()">אודותיי</button>
+</header>
+
+<div class="toolbar">
+  <div class="search-row">
+    <button class="home-btn" title="לדף הבית" onclick="goHome()">⌂</button>
+    <div class="search-box">
+      <input id="q" type="search" placeholder="מה מחפשים? למשל: חוסן, קלפים, פתיחת שנה..." oninput="render()">
+      <span class="mag">🔎</span>
+    </div>
+  </div>
+  <div class="filters">
+    <select id="fDomain" onchange="render()"><option value="">כל התחומים</option></select>
+    <select id="fAud" onchange="render()"><option value="">כל הקהלים</option></select>
+    <select id="fPlat" onchange="render()"><option value="">כל הפלטפורמות</option></select>
+  </div>
+  <div class="count-line" id="countLine"></div>
+</div>
+
+<main id="app">
+  <div class="state"><div class="spinner"></div>טוען את המאגר...</div>
+</main>
+
+<footer>
+  <div class="fh">חני בלוי</div>
+  יועצת חינוכית ומדריכה ארצית
+</footer>
+</div>
+
+<!-- חלונית תוצר -->
+<div class="overlay" id="prodOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="prodModal"></div>
+</div>
+
+<!-- חלונית אודות -->
+<div class="overlay" id="aboutOverlay" onclick="if(event.target===this)closeAbout()">
+  <div class="modal about-modal">
+    <button class="mclose" onclick="closeAbout()">✕</button>
+    <div class="mbody">
+      <img src="logo.png" alt="" onerror="this.style.display='none'">
+      <h3 style="font-family:'Suez One',serif;color:var(--bordo)">נעים להכיר, אני חני</h3>
+      <p>אני חני בלוי, יועצת חינוכית ומדריכה ארצית, ומאחוריי שנים של עבודה עם יועצות, מדריכות, גננות וצוותי חינוך — בשגרה, בחירום ובכל מה שביניהם. אני מאמינה שכלי טוב ברגע הנכון יכול לשנות שיחה, שיעור ולפעמים חיים שלמים.</p>
+      <p>המאגר הזה הוא הבית של מאות התוצרים שיצרתי לאורך הדרך: מערכי חוסן, כלים לצל"ח ולשעת חירום, שיעורי כישורי חיים, סדנאות לצוותים, פעילויות לחגים ועוד. הכל פתוח כאן בשבילכן — חפשו, קחו והשתמשו. שיהיה בהצלחה! 💛</p>
+      <p style="text-align:center;color:var(--olive);font-weight:700">רוצות להתייעץ? אני כאן — כתבו לי בוואטסאפ 👇</p>
+    </div>
+  </div>
+</div>
+
+<a class="fab wa" href="https://wa.me/972545918770?text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%97%D7%A0%D7%99%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%9E%D7%90%D7%92%D7%A8%20%D7%94%D7%AA%D7%95%D7%A6%D7%A8%D7%99%D7%9D%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%A5" target="_blank" rel="noopener" title="וואטסאפ לחני" aria-label="פנייה בוואטסאפ">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.83 14.12c-.25.7-1.44 1.33-1.98 1.38-.53.05-1.03.24-3.46-.72-2.93-1.15-4.79-4.14-4.93-4.33-.14-.19-1.17-1.56-1.17-2.97 0-1.41.74-2.1 1-2.39.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.41-.07.64.49.25.58.83 2 .9 2.14.07.14.12.31.02.5-.09.19-.14.31-.28.47-.14.17-.3.37-.42.5-.14.14-.29.29-.13.57.17.29.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.41.29.14.45.12.62-.07.17-.19.71-.83.9-1.11.19-.29.38-.24.64-.14.26.1 1.66.78 1.94.93.29.14.48.22.55.34.07.12.07.7-.18 1.37z"/></svg>
+</a>
+<button class="fab top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="חזרה למעלה">↑</button>
+
+<script>
+/* ============ הגדרות ============ */
+var SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQU8ESqp3BO6UtdHu7amUaPvMHywB0OZU-AcFfqRlo40XolLz3hZ3puUHYkkUryiHcDEEYcGfZtvAso/pub?gid=1755222535&single=true&output=tsv";
+var SHOW_PERSONAL = false; /* בדף הציבורי: רק שורות "ציבורי" */
+var PREVIEW_COUNT = 4;     /* כמה כרטיסים באשכול לפני "הצג הכל" */
+
+var CLUSTERS = [
+ {name:"חוסן, רגש ותקווה",       icon:"🦁", grad:"linear-gradient(135deg,#9B3D47,#C89B3C)", domains:["חוסן ותקווה","פעילויות חוסן לצוות"]},
+ {name:"חירום, מוגנות ומניעה",   icon:"🛡️", grad:"linear-gradient(135deg,#7D1C2A,#5C6228)", domains:["צל\"ח, חירום ומשברים","מניעת אובדנות","מוגנות ומניעת פגיעות"]},
+ {name:"כישורי חיים ומשפחה",     icon:"🌱", grad:"linear-gradient(135deg,#5C6228,#8A9A3B)", domains:["כישורי חיים","משפחה"]},
+ {name:"כלים למקצועניות",        icon:"🧰", grad:"linear-gradient(135deg,#6B4E2E,#C89B3C)", domains:["כלים ליועצות","מדריכות","השתלמויות, מליאות וסדנאות"]},
+ {name:"חגים ומועדים",           icon:"🕯️", grad:"linear-gradient(135deg,#B8860B,#7D1C2A)", domains:["חג הפסח","פורים","חנוכה","מועדים ותאריכים נוספים"]},
+ {name:"שנת הלימודים",           icon:"🎒", grad:"linear-gradient(135deg,#4E6E8E,#5C6228)", domains:["חזרה ללימודים וסיכום שנה"]},
+ {name:"יהדות, רוח ושליחות",     icon:"✨", grad:"linear-gradient(135deg,#8C6D1F,#9B3D47)", domains:["תוכן יהודי-רוחני","בית חב\"ד והקמפיין"]},
+ {name:"מיתוג ופרסומים",         icon:"🎨", grad:"linear-gradient(135deg,#9B3D47,#5C6228)", domains:["פרסומים, לוגואים ומיתוג"]}
+];
+var FALLBACK_CLUSTER = {name:"עוד תוצרים", icon:"📦", grad:"linear-gradient(135deg,#8A7B72,#C89B3C)", domains:[]};
+
+/* ============ מצב ============ */
+var products = [];      /* כל התוצרים אחרי סינון חשיפה */
+var expanded = {};      /* אילו אשכולות פתוחים */
+var currentList = [];   /* הרשימה שמוצגת כרגע (לניווט בחלונית) */
+var currentIdx = -1;
+
+/* ============ טעינת הנתונים ============ */
+function loadData(){
+  document.getElementById('app').innerHTML = '<div class="state"><div class="spinner"></div>טוען את המאגר...</div>';
+  fetch(SHEET_URL, {cache:"no-store"})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+    .then(function(text){ parseTSV(text); buildFilters(); render(); })
+    .catch(function(err){
+      document.getElementById('app').innerHTML =
+        '<div class="err-box"><div class="e">🌸</div><h3>המאגר מתקשה להיטען כרגע</h3>' +
+        '<p>ייתכן שיש בעיה זמנית בחיבור לאינטרנט או בטעינת הטבלה.<br>נסו לרענן בעוד רגע — בדרך כלל זה מסתדר.</p>' +
+        '<button onclick="loadData()">נסו שוב</button></div>';
+    });
+}
+
+function parseTSV(text){
+  var lines = text.split(/\r?\n/);
+  products = [];
+  for(var i=1;i<lines.length;i++){
+    if(!lines[i] || !lines[i].trim()) continue;
+    var c = lines[i].split('\t');
+    var name = (c[0]||'').trim();
+    var link = (c[1]||'').trim();
+    if(!name || !link) continue;
+    var vis = (c[6]||'').trim();
+    var isPersonal = vis.indexOf('אישי') === 0;
+    if(isPersonal && !SHOW_PERSONAL) continue;
+    products.push({
+      name:name, link:link,
+      domain:(c[2]||'').trim() || 'כללי',
+      aud:(c[3]||'').trim(),
+      plat:(c[4]||'').trim(),
+      desc:(c[5]||'').trim(),
+      personal:isPersonal,
+      date:(c[7]||'').trim(),
+      kw:(c[8]||'').trim(),
+      img:(c[9]||'').trim(),
+      order:i
+    });
+  }
+  /* מיון: מתוארכים לפי החדש ראשון, אחריהם לפי סדר הגיליון */
+  products.sort(function(a,b){
+    var da = parseDate(a.date), db = parseDate(b.date);
+    if(da && db) return db - da;
+    if(da) return -1;
+    if(db) return 1;
+    return a.order - b.order;
+  });
+}
+
+function parseDate(s){
+  if(!s) return null;
+  s = s.trim();
+  var m = s.match(/^(\d{1,2})[\/\.\-](\d{1,2})[\/\.\-](\d{2,4})$/);
+  if(m){ var y=+m[3]; if(y<100)y+=2000; return new Date(y, m[2]-1, m[1]).getTime(); }
+  m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if(m) return new Date(+m[1], m[2]-1, m[3]).getTime();
+  var t = Date.parse(s);
+  return isNaN(t) ? null : t;
+}
+
+/* ============ חיפוש חכם ============ */
+function norm(s){
+  return (s||'').toLowerCase()
+    .replace(/["'\u05F4\u05F3\u201C\u201D\u2018\u2019]/g,'')  /* גרשיים וגרשים */
+    .replace(/[\-–—_\.]/g,' ')
+    .replace(/\s+/g,' ').trim();
+}
+function haystack(p){
+  return norm(p.name+' '+p.desc+' '+p.domain+' '+p.aud+' '+p.plat+' '+p.kw);
+}
+function matches(p, tokens){
+  if(!tokens.length) return true;
+  var h = haystack(p);
+  for(var i=0;i<tokens.length;i++){ if(h.indexOf(tokens[i])===-1) return false; }
+  return true;
+}
+
+/* ============ מסננים ============ */
+function buildFilters(){
+  fillSelect('fDomain', uniq(products.map(function(p){return p.domain})));
+  fillSelect('fAud',    uniq(products.map(function(p){return p.aud})));
+  fillSelect('fPlat',   uniq(products.map(function(p){return p.plat})));
+}
+function uniq(arr){
+  var seen={}, out=[];
+  arr.forEach(function(v){ if(v && !seen[v]){seen[v]=1; out.push(v);} });
+  return out.sort(function(a,b){return a.localeCompare(b,'he')});
+}
+function fillSelect(id, vals){
+  var sel = document.getElementById(id);
+  while(sel.options.length>1) sel.remove(1);
+  vals.forEach(function(v){ var o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); });
+}
+
+function getFiltered(){
+  var q = norm(document.getElementById('q').value);
+  var tokens = q ? q.split(' ') : [];
+  var fd = document.getElementById('fDomain').value;
+  var fa = document.getElementById('fAud').value;
+  var fp = document.getElementById('fPlat').value;
+  return products.filter(function(p){
+    if(fd && p.domain!==fd) return false;
+    if(fa && p.aud!==fa) return false;
+    if(fp && p.plat!==fp) return false;
+    return matches(p, tokens);
+  });
+}
+
+/* ============ תצוגה ============ */
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function clusterOf(domain){
+  for(var i=0;i<CLUSTERS.length;i++){
+    if(CLUSTERS[i].domains.indexOf(domain)!==-1) return CLUSTERS[i];
+  }
+  return FALLBACK_CLUSTER;
+}
+
+function cardHTML(p, idx){
+  var visual;
+  var cl = clusterOf(p.domain);
+  if(p.img){
+    visual = '<img loading="lazy" src="'+esc(p.img)+'" alt="" onerror="fbCard(this)" data-icon="'+cl.icon+'" data-grad="'+esc(cl.grad)+'" data-title="'+esc(p.name)+'">';
+  } else {
+    visual = '<div class="fb" style="background:'+cl.grad+'"><span class="fi">'+cl.icon+'</span><span class="ft">'+esc(shortName(p.name))+'</span></div>';
+  }
+  var chips = '<span class="chip b">'+esc(p.domain)+'</span>';
+  if(p.aud) chips += '<span class="chip">'+esc(p.aud)+'</span>';
+  return '<div class="card" style="animation-delay:'+((idx%8)*0.04)+'s" onclick="openModal('+p._i+')">' +
+    '<div class="thumb">'+visual+'</div>' +
+    '<div class="card-body"><div class="card-title">'+esc(p.name)+'</div><div class="chips">'+chips+'</div></div></div>';
+}
+function shortName(s){ return s.length>34 ? s.slice(0,32)+'…' : s; }
+function fbCard(imgEl){
+  var d = document.createElement('div');
+  d.className='fb'; d.style.background = imgEl.getAttribute('data-grad');
+  d.innerHTML = '<span class="fi">'+imgEl.getAttribute('data-icon')+'</span><span class="ft">'+esc(shortName(imgEl.getAttribute('data-title')))+'</span>';
+  imgEl.parentNode.appendChild(d); imgEl.remove();
+}
+
+function render(){
+  var list = getFiltered();
+  list.forEach(function(p,i){ p._i = i; });
+  currentList = list;
+  var app = document.getElementById('app');
+  var q = document.getElementById('q').value.trim();
+  var filtering = q || document.getElementById('fDomain').value || document.getElementById('fAud').value || document.getElementById('fPlat').value;
+
+  var cl = document.getElementById('countLine');
+  if(filtering){
+    cl.innerHTML = 'נמצאו <b>'+list.length+'</b> תוצרים <button class="clear-btn" onclick="goHome()">ניקוי חיפוש</button>';
+  } else {
+    cl.innerHTML = 'במאגר <b>'+list.length+'</b> תוצרים — גללו לפי נושא או חפשו למעלה';
+  }
+
+  if(!list.length){
+    app.innerHTML = '<div class="state"><div style="font-size:2rem">🔍</div><p style="margin-top:10px">לא נמצאו תוצרים מתאימים.<br>נסו מילה אחרת או נקו את הסינון.</p></div>';
+    return;
+  }
+
+  if(filtering){
+    /* תצוגת תוצאות שטוחה */
+    var h = '<div class="cluster"><div class="grid">';
+    list.forEach(function(p,i){ h += cardHTML(p,i); });
+    h += '</div></div>';
+    app.innerHTML = h;
+    return;
+  }
+
+  /* תצוגת אשכולות */
+  var groups = [];
+  CLUSTERS.concat([FALLBACK_CLUSTER]).forEach(function(c){
+    var items = list.filter(function(p){ return clusterOf(p.domain)===c; });
+    if(items.length) groups.push({c:c, items:items});
+  });
+  var h = '';
+  groups.forEach(function(g){
+    var open = expanded[g.c.name];
+    var shown = open ? g.items : g.items.slice(0, PREVIEW_COUNT);
+    h += '<section class="cluster"><div class="cluster-head">' +
+         '<div class="cluster-icon">'+g.c.icon+'</div>' +
+         '<h2>'+esc(g.c.name)+'</h2><span class="n">('+g.items.length+')</span></div>' +
+         '<div class="grid">';
+    shown.forEach(function(p,i){ h += cardHTML(p,i); });
+    h += '</div>';
+    if(g.items.length > PREVIEW_COUNT){
+      h += '<button class="show-more" onclick="toggleCluster(\''+esc(g.c.name)+'\')">' +
+           (open ? 'הצגה מצומצמת ▲' : 'הצגת כל ' + g.items.length + ' התוצרים ▼') + '</button>';
+    }
+    h += '</section>';
+  });
+  app.innerHTML = h;
+}
+
+function toggleCluster(name){ expanded[name] = !expanded[name]; render(); }
+
+function goHome(){
+  document.getElementById('q').value='';
+  document.getElementById('fDomain').value='';
+  document.getElementById('fAud').value='';
+  document.getElementById('fPlat').value='';
+  expanded = {};
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============ חלונית תוצר ============ */
+function openModal(i){
+  currentIdx = i;
+  var p = currentList[i];
+  if(!p) return;
+  var cl = clusterOf(p.domain);
+  var visual = p.img
+    ? '<img class="mimg" src="'+esc(p.img)+'" alt="" onerror="this.outerHTML=fbModal(\''+cl.icon+'\',\''+esc(cl.grad)+'\')">'
+    : fbModal(cl.icon, cl.grad);
+  var chips = '<span class="chip b">'+esc(p.domain)+'</span>';
+  if(p.aud) chips += '<span class="chip">'+esc(p.aud)+'</span>';
+  if(p.plat) chips += '<span class="chip">'+esc(p.plat)+'</span>';
+  var html = '<button class="mclose" onclick="closeModal()">✕</button>' + visual +
+    '<div class="mbody"><h3>'+esc(p.name)+'</h3>' +
+    '<div class="mchips">'+chips+'</div>' +
+    (p.desc ? '<p class="mdesc">'+esc(p.desc)+'</p>' : '') +
+    (p.date ? '<p class="mdate">📅 '+esc(p.date)+'</p>' : '') +
+    '<a class="open-btn" href="'+esc(p.link)+'" target="_blank" rel="noopener">פתיחת התוצר ←</a>' +
+    '<div class="mnav">' +
+    '<button onclick="navModal(1)" '+(i>=currentList.length-1?'disabled':'')+'>→ הבא</button>' +
+    '<button onclick="navModal(-1)" '+(i<=0?'disabled':'')+'>הקודם ←</button>' +
+    '</div></div>';
+  document.getElementById('prodModal').innerHTML = html;
+  document.getElementById('prodOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function fbModal(icon, grad){
+  return '<div class="mfb" style="background:'+grad+'"><span class="fi">'+icon+'</span><span class="ft">מאגר התוצרים</span></div>';
+}
+function navModal(dir){
+  var n = currentIdx + dir;
+  if(n>=0 && n<currentList.length) openModal(n);
+}
+function closeModal(){
+  document.getElementById('prodOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function openAbout(){ document.getElementById('aboutOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeAbout(){ document.getElementById('aboutOverlay').classList.remove('open'); document.body.style.overflow=''; }
+
+document.addEventListener('keydown', function(e){
+  if(document.getElementById('prodOverlay').classList.contains('open')){
+    if(e.key==='Escape') closeModal();
+    if(e.key==='ArrowRight') navModal(1);
+    if(e.key==='ArrowLeft') navModal(-1);
+  } else if(document.getElementById('aboutOverlay').classList.contains('open')){
+    if(e.key==='Escape') closeAbout();
+  }
+});
+window.addEventListener('scroll', function(){
+  document.getElementById('topBtn').classList.toggle('show', window.scrollY > 500);
+});
+
+loadData();
+</script>
+</body>
+</html>
