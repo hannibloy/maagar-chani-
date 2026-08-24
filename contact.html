@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>צרו קשר — חני בלוי</title>
+<meta name="description" content="רוצות להתייעץ, להזמין הדרכה או לשאול על תוצר? כתבו לחני בטופס, בוואטסאפ, בטלפון או במייל.">
+<meta name="theme-color" content="#FBF6ED">
+
+<link rel="icon" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Suez+One&family=Bellefair&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Suez+One&family=Bellefair&display=swap"></noscript>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+
+<body>
+<div class="page">
+
+  <div class="wash"></div>
+
+  <header class="nav" id="site-header"></header>
+
+  <div class="shell">
+    <main id="main-content">
+
+      <section class="section" style="text-align:center;padding-bottom:0">
+        <h1 class="hero__title" style="font-size:clamp(1.4rem,4.8vw,2rem)">צרו קשר</h1>
+        <div class="hero__sub">שאלה, התייעצות, הזמנת הדרכה — אני כאן</div>
+        <div class="hero__rule"></div>
+      </section>
+
+      <div class="contact-grid">
+
+        <form class="form-card" id="contact-form" novalidate>
+          <label for="cf-name">שם *</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" required>
+
+          <label for="cf-phone">טלפון</label>
+          <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel">
+
+          <label for="cf-email">אימייל</label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email">
+
+          <label for="cf-topic">על מה נדבר?</label>
+          <select id="cf-topic" name="topic">
+            <option value="התייעצות">התייעצות מקצועית</option>
+            <option value="הדרכה">הזמנת הדרכה או סדנה</option>
+            <option value="תוצר">שאלה על תוצר מהמאגר</option>
+            <option value="אחר">משהו אחר</option>
+          </select>
+
+          <label for="cf-message">ההודעה *</label>
+          <textarea id="cf-message" name="message" required></textarea>
+
+          <!-- מלכודת ספאם: שדה נסתר שבני אדם לא ממלאים -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="cf-website">אתר</label>
+            <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button class="btn-primary" type="submit">שליחה</button>
+          <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+          <p class="form-note">הפרטים נשמרים אצלי בלבד ומשמשים רק כדי לחזור אלייך.<br>
+            מעדיפה וואטסאפ? <a href="https://wa.me/972545918770?text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%97%D7%A0%D7%99%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%A5" target="_blank" rel="noopener">לחצי כאן 💬</a></p>
+        </form>
+
+        <div class="contact-side">
+          <a class="contact-link" href="https://wa.me/972545918770?text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%97%D7%A0%D7%99%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%A5" target="_blank" rel="noopener">
+            <span class="cl-ico" aria-hidden="true">💬</span>
+            <span><b>וואטסאפ</b><small>הדרך המהירה ביותר</small></span>
+          </a>
+          <a class="contact-link" href="tel:+972545918770">
+            <span class="cl-ico" aria-hidden="true">📞</span>
+            <span><b>054-591-8770</b><small>אפשר גם להתקשר</small></span>
+          </a>
+          <a class="contact-link" href="mailto:bloyarava1@gmail.com">
+            <span class="cl-ico" aria-hidden="true">✉️</span>
+            <span><b>bloyarava1@gmail.com</b><small>למכתבים ארוכים יותר</small></span>
+          </a>
+        </div>
+
+      </div>
+
+    </main>
+
+    <footer class="footer" id="site-footer"></footer>
+  </div>
+
+</div>
+
+<script src="assets/app.js"></script>
+<script src="assets/site.js"></script>
+<script>Site.init({ page: 'contact' });</script>
+</body>
+</html>
