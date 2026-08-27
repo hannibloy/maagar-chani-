@@ -54,6 +54,7 @@
     anchor: function (a, b) { return '<circle cx="24" cy="10" r="4.5" fill="' + b + '" stroke="' + a + '" stroke-width="2.2"/><path d="M24 15v25" stroke="' + a + '" stroke-width="2.4" stroke-linecap="round"/><path d="M16 20h16" stroke="' + a + '" stroke-width="2.4" stroke-linecap="round"/><path d="M10 28c0 8 6.5 12 14 12s14-4 14-12" fill="none" stroke="' + a + '" stroke-width="2.4" stroke-linecap="round"/>'; },
     bridge: function (a, b) { return '<path d="M6 32c0-10 8-16 18-16s18 6 18 16" fill="' + b + '" stroke="' + a + '" stroke-width="2.2" stroke-linecap="round"/><path d="M6 32h36" stroke="' + a + '" stroke-width="2.4" stroke-linecap="round"/><path d="M14 32v-8M24 32V16M34 32v-8" stroke="' + a + '" stroke-width="2" stroke-linecap="round"/><path d="M9 38h30" stroke="' + a + '" stroke-width="2" stroke-linecap="round" opacity=".5"/>'; },
     compass: function (a, b) { return '<circle cx="24" cy="24" r="15" fill="' + b + '" stroke="' + a + '" stroke-width="2.2"/><path d="M30 18l-4 10-10 4 4-10z" fill="' + a + '" opacity=".85"/><circle cx="24" cy="24" r="2" fill="#fff"/>'; },
+    light: function (a, b) { return '<circle cx="24" cy="26" r="10" fill="' + b + '" stroke="' + a + '" stroke-width="2.2"/><path d="M24 21c2.2-1.7 2.3-3.6.8-6 2.5 1.1 3.9 2.9 3.9 4.9 0 1.7-1.2 3-2.7 3.4" fill="' + a + '" opacity=".85"/><g stroke="' + a + '" stroke-width="2" stroke-linecap="round" opacity=".7"><path d="M24 8v4M10 26h4M34 26h4M13.5 15.5l2.8 2.8M34.5 15.5l-2.8 2.8M15 37l2.4-2.4M33 37l-2.4-2.4"/></g>'; },
     breath: function (a, b) { return '<circle cx="24" cy="24" r="5" fill="' + b + '" stroke="' + a + '" stroke-width="2.2"/><path d="M14 14a14 14 0 000 20" fill="none" stroke="' + a + '" stroke-width="2.2" stroke-linecap="round" opacity=".8"/><path d="M34 14a14 14 0 010 20" fill="none" stroke="' + a + '" stroke-width="2.2" stroke-linecap="round" opacity=".8"/><path d="M8 9a21 21 0 000 30M40 9a21 21 0 010 30" fill="none" stroke="' + a + '" stroke-width="1.8" stroke-linecap="round" opacity=".4"/>'; }
   };
 
@@ -68,7 +69,8 @@
     [/פסח|הגד|מצה|ליל הסדר|חמץ|חירות/, 'matza'],
     [/חנוכ|נר |נרות|סביבון|מנור|הדלק/, 'candle'],
     [/קלפ|משחק|ערכ|קוביי|בינגו|חידון/, 'cards'],
-    [/תקוו|אור|בוקר|פתיחת שנה|שמש|זריח|אופטימ|שמחה/, 'sun'],
+    [/להדליק|מדליק|נדליק|אורות|(^| )אור( |$)/, 'light'],
+    [/תקוו|בוקר|פתיחת שנה|שמש|זריח|אופטימ|שמחה/, 'sun'],
     [/ט.?ו בשבט|צמיח|שורש|עץ|גדיל|נטיע|פרי/, 'tree'],
     [/צוות|שיתוף|קבוצ|גיבוש|הורים|קהיל|חבר|ביחד|יחד/, 'hands'],
     [/שיח|הקשב|דיאלוג|תקשור|ליווי|היוועצ|הורות/, 'chat'],
@@ -95,6 +97,7 @@
     matza:   { c1: '#A8642A', c2: '#F2D3B4' },
     candle:  { c1: '#B8860B', c2: '#F6E0AE' },
     cards:   { c1: '#9B3D47', c2: '#F0C9CC' },
+    light:   { c1: '#A8741C', c2: '#FBE6B8' },
     sun:     { c1: '#C88A2C', c2: '#FAE2B8' },
     tree:    { c1: '#5C6228', c2: '#CFD9A6' },
     hands:   { c1: '#7A5C8E', c2: '#DCCCE9' },
@@ -211,6 +214,26 @@
     }
     return html + '</span>';
   }
+  /* כריכת ציור מלאה לפי מוטיב — assets/covers/motif-X.jpg.
+     נטענת מעל האקוורל; עמודה 10 (תמונת תוצר ספציפית) עדיין גוברת עליה. */
+  function motifCoverHtml(art) {
+    var src = 'assets/covers/motif-' + art + '.jpg';
+    if (missingIcons[src]) return '';
+    return '<img class="cover" src="' + src + '" alt="" loading="lazy" decoding="async">';
+  }
+
+  /* תמונת שער מופיעה רק אחרי שנטענה בהצלחה — לעולם לא ריבוע ריק */
+  function wireCovers(root) {
+    root.querySelectorAll('img.cover').forEach(function (img) {
+      if (img.complete && img.naturalWidth) { img.classList.add('is-loaded'); return; }
+      img.addEventListener('load', function () { img.classList.add('is-loaded'); });
+      img.addEventListener('error', function () {
+        missingIcons[img.getAttribute('src')] = 1;
+        img.remove();
+      });
+    });
+  }
+
   function wireIcons(root) {
     root.querySelectorAll('img.ico__png').forEach(function (img) {
       function shown() {
@@ -484,6 +507,7 @@
           (isHighlighted(p) ? '<span class="card__now">✨ עכשיו</span>' : '') +
           '<span class="card__icon">' + iconEl(a.pal, 34, a.pal.art, 'motif-' + a.pal.art + '.png') + '</span>' +
           '<span class="card__label">' + esc(a.short) + '</span>' +
+          motifCoverHtml(a.pal.art) +
           coverHtml(p) +
         '</span>' +
         '<span class="card__body">' +
@@ -594,14 +618,6 @@
       wireIcons(el.main);
     }
 
-    /* תמונת שער אמיתית מופיעה רק אחרי שנטענה בהצלחה — לעולם לא ריבוע ריק */
-    function wireCovers(root) {
-      root.querySelectorAll('img.cover').forEach(function (img) {
-        if (img.complete && img.naturalWidth) { img.classList.add('is-loaded'); return; }
-        img.addEventListener('load', function () { img.classList.add('is-loaded'); });
-        img.addEventListener('error', function () { img.remove(); });
-      });
-    }
 
     function renderModal() {
       var p = state.modalIdx >= 0 ? list[state.modalIdx] : null;
@@ -623,6 +639,7 @@
             '<div class="modal__hero" style="background:' + esc(a.wash) + '">' +
               '<span class="modal__icon">' + iconEl(a.pal, 56, a.pal.art, 'motif-' + a.pal.art + '.png') + '</span>' +
               '<span class="modal__label">' + esc(a.short) + '</span>' +
+              motifCoverHtml(a.pal.art) +
               coverHtml(p) +
             '</div>' +
             '<div class="modal__body">' +
@@ -794,7 +811,8 @@
     helpers: {
       CLUSTERS: CLUSTERS, FALLBACK: FALLBACK,
       clusterOf: clusterOf, artOf: artOf, iconSvg: iconSvg, iconEl: iconEl,
-      wireIcons: wireIcons, watercolor: watercolor, isHighlighted: isHighlighted,
+      wireIcons: wireIcons, wireCovers: wireCovers, motifCoverHtml: motifCoverHtml,
+      watercolor: watercolor, isHighlighted: isHighlighted,
       parseDate: parseDate, esc: esc, hexA: hexA
     }
   };

@@ -188,6 +188,7 @@
         '<button class="btn-close" type="button" aria-label="סגירה">✕</button>' +
         '<div class="popup__hero" style="background:' + esc(a.wash) + '">' +
           H.iconEl(a.pal, 44, a.pal.art, 'motif-' + a.pal.art + '.png') +
+          H.motifCoverHtml(a.pal.art) +
         '</div>' +
         '<div class="popup__body">' +
           '<h2 class="popup__title">🌸 חדש ורלוונטי עכשיו</h2>' +
@@ -219,6 +220,7 @@
     setTimeout(function () {
       document.body.appendChild(overlay);
       Maagar.helpers.wireIcons(overlay);
+      Maagar.helpers.wireCovers(overlay);
       overlay.querySelector('.btn-close').focus();
     }, 1200);
   }
@@ -255,6 +257,7 @@
                 '<span class="card__now">✨ עכשיו</span>' +
                 '<span class="card__icon">' + H.iconEl(a.pal, 34, a.pal.art, 'motif-' + a.pal.art + '.png') + '</span>' +
                 '<span class="card__label" style="color:' + a.pal.c1 + '">' + esc(a.short) + '</span>' +
+                H.motifCoverHtml(a.pal.art) +
               '</span>' +
               '<span class="card__body">' +
                 '<span class="card__name">' + esc(p.name) + '</span>' +
@@ -263,6 +266,7 @@
             '</a>';
           }).join('');
           H.wireIcons(nowGrid);
+          H.wireCovers(nowGrid);
         }
       }
 
@@ -327,7 +331,7 @@
         .then(function () {
           form.reset();
           status.className = 'form-status is-ok';
-          status.textContent = 'ההודעה נשלחה! אחזור אלייך בהקדם 🌸';
+          status.textContent = 'ההודעה נשלחה! אחזור אליכם בהקדם 🌸';
         })
         .catch(function () {
           status.className = 'form-status is-err';

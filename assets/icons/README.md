@@ -24,10 +24,11 @@
 | `cluster-branding.png` | מיתוג ופרסומים |
 | `cluster-more.png` | עוד תוצרים |
 
-### מוטיבים לתוצרים (24)
+### מוטיבים לתוצרים (25)
 | קובץ | נושא | קובץ | נושא |
 |---|---|---|---|
 | `motif-anchor.png` | עוגן | `motif-sun.png` | שמש / תקווה |
+| `motif-light.png` | אור / להדליק | | |
 | `motif-bridge.png` | גשר | `motif-tree.png` | עץ / צמיחה |
 | `motif-compass.png` | מצפן / מסע | `motif-hands.png` | ידיים / צוות |
 | `motif-breath.png` | נשימה / רגיעה | `motif-chat.png` | שיחה / הקשבה |
