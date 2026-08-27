@@ -277,8 +277,11 @@
         tiles.innerHTML = groups.map(function (c) {
           var count = products.filter(function (p) { return H.clusterOf(p.domain) === c; }).length;
           if (!count) return '';
-          return '<a class="tile" href="maagar.html?cluster=' + c.slug + '"' +
+          return '<a class="tile tile--art" href="maagar.html?cluster=' + c.slug + '"' +
             ' style="--tile-wash:' + esc(H.watercolor(c, 1)) + '">' +
+            '<span class="tile__artwrap"><img class="tile__art" src="assets/img/cluster-' + c.slug + '.jpg"' +
+              ' alt="" loading="lazy" decoding="async"' +
+              ' onerror="var t=this.closest(\'.tile\');if(t)t.classList.add(\'tile--noart\');this.parentNode.removeChild(this)"></span>' +
             H.iconEl(c, 46, c.art, 'cluster-' + c.slug + '.png') +
             '<span class="tile__name">' + esc(c.name) + '</span>' +
             '<span class="tile__count">' + count + ' תוצרים</span>' +
