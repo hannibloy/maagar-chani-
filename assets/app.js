@@ -264,6 +264,43 @@
     return !!u && u.indexOf('design.canva.ai') === -1 && u.indexOf('http') === 0;
   }
 
+  /* ---------- תמונה אמיתית מהקישור עצמו — בלי שום פעולה בגיליון ----------
+     קנבה מפרסמת לכל עיצוב תמונת שקף ראשון רשמית (oEmbed):
+     /design/<id>[/<token>]/screen?type=thumbnail — נגזרת ישירות מהקישור.
+     נכשלה הטעינה? האקוורל שמתחת נשאר. */
+  function linkThumb(link) {
+    if (!link) return '';
+    var m;
+    /* Canva — קישורי view/edit/watch, עם או בלי טוקן שיתוף */
+    m = link.match(/^(https?:\/\/(?:www\.)?canva\.com\/design\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)?)\/(?:view|watch|edit)/);
+    if (m) return m[1] + '/screen?type=thumbnail';
+    /* YouTube */
+    m = link.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?[^#]*v=|shorts\/|embed\/))([A-Za-z0-9_-]{11})/);
+    if (m) return 'https://i.ytimg.com/vi/' + m[1] + '/hqdefault.jpg';
+    /* Google Drive — קובץ משותף */
+    m = link.match(/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]+)/);
+    if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1000';
+    /* Google Slides / Docs / Sheets */
+    m = link.match(/docs\.google\.com\/(?:presentation|document|spreadsheets)\/d\/([A-Za-z0-9_-]+)/);
+    if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1000';
+    return '';
+  }
+
+  /* שכבת שער מהקישור — לשימוש בכל תבניות הכרטיסים */
+  function linkCoverHtml(p) {
+    var t = linkThumb(p && p.link);
+    if (!t) return '';
+    return '<img class="cover" src="' + t.replace(/"/g, '&quot;') + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
+  }
+
+  /* הטמעה חיה — מצגת קנבה מתנגנת בתוך החלון, מדפדפים בלי לצאת מהאתר */
+  function linkEmbed(link) {
+    if (!link) return '';
+    var m = link.match(/^(https?:\/\/(?:www\.)?canva\.com\/design\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)?)\/(?:view|watch|edit)/);
+    if (m) return m[1] + '/view?embed';
+    return '';
+  }
+
   /* האיור לכל תוצר מחושב פעם אחת ונשמר במטמון */
   var artCache = {};
   function artOf(p) {
@@ -493,8 +530,9 @@
     }
 
     function coverHtml(p) {
-      if (!usableImg(p.img)) return '';
-      return '<img class="cover" src="' + esc(p.img) + '" alt="" loading="lazy" decoding="async">';
+      var h = linkCoverHtml(p);
+      if (usableImg(p.img)) h += '<img class="cover" src="' + esc(p.img) + '" alt="" loading="lazy" decoding="async">';
+      return h;
     }
 
     function cardHtml(p, i) {
@@ -641,6 +679,13 @@
               '<span class="modal__label">' + esc(a.short) + '</span>' +
               motifCoverHtml(a.pal.art) +
               coverHtml(p) +
+              (function () {
+                var em = linkEmbed(p.link);
+                if (!em) return '';
+                return '<iframe class="modal__embed" src="' + esc(em) + '"' +
+                  ' loading="lazy" allowfullscreen allow="fullscreen"' +
+                  ' title="' + esc(p.name) + ' — מצגת חיה"></iframe>';
+              })() +
             '</div>' +
             '<div class="modal__body">' +
               '<h3 class="modal__name">' + esc(p.name) + '</h3>' +
@@ -659,6 +704,8 @@
 
       wireCovers(el.modalRoot);
       wireIcons(el.modalRoot);
+      var emb = el.modalRoot.querySelector('.modal__embed');
+      if (emb) emb.addEventListener('load', function () { emb.classList.add('is-live'); });
       var close = document.getElementById('modal-close');
       if (close) close.focus();
     }
@@ -811,7 +858,7 @@
     helpers: {
       CLUSTERS: CLUSTERS, FALLBACK: FALLBACK,
       clusterOf: clusterOf, artOf: artOf, iconSvg: iconSvg, iconEl: iconEl,
-      wireIcons: wireIcons, wireCovers: wireCovers, motifCoverHtml: motifCoverHtml,
+      wireIcons: wireIcons, wireCovers: wireCovers, motifCoverHtml: motifCoverHtml, linkCoverHtml: linkCoverHtml, linkThumb: linkThumb, linkEmbed: linkEmbed,
       watercolor: watercolor, isHighlighted: isHighlighted,
       parseDate: parseDate, esc: esc, hexA: hexA
     }

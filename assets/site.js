@@ -189,6 +189,7 @@
         '<div class="popup__hero" style="background:' + esc(a.wash) + '">' +
           H.iconEl(a.pal, 44, a.pal.art, 'motif-' + a.pal.art + '.png') +
           H.motifCoverHtml(a.pal.art) +
+          H.linkCoverHtml(p) +
         '</div>' +
         '<div class="popup__body">' +
           '<h2 class="popup__title">🌸 חדש ורלוונטי עכשיו</h2>' +
@@ -258,6 +259,7 @@
                 '<span class="card__icon">' + H.iconEl(a.pal, 34, a.pal.art, 'motif-' + a.pal.art + '.png') + '</span>' +
                 '<span class="card__label" style="color:' + a.pal.c1 + '">' + esc(a.short) + '</span>' +
                 H.motifCoverHtml(a.pal.art) +
+                H.linkCoverHtml(p) +
               '</span>' +
               '<span class="card__body">' +
                 '<span class="card__name">' + esc(p.name) + '</span>' +
