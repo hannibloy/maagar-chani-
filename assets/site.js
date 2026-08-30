@@ -166,11 +166,8 @@
 
   function showPopup(products) {
     var H = Maagar.helpers;
+    /* הפופאפ מציג אך ורק תוצרים שחני סימנה בעמודת ההדגשה — בלי בחירה אוטומטית */
     var picks = products.filter(function (p) { return H.isHighlighted(p); });
-    if (!picks.length) {
-      var dated = products.filter(function (p) { return H.parseDate(p.date); });
-      if (dated.length) picks = [dated[0]];
-    }
     if (!picks.length) return;
     var p = picks[0];
     var a = H.artOf(p);
@@ -189,7 +186,6 @@
         '<div class="popup__hero" style="background:' + esc(a.wash) + '">' +
           H.iconEl(a.pal, 44, a.pal.art, 'motif-' + a.pal.art + '.png') +
           H.motifCoverHtml(a.pal.art) +
-          H.linkCoverHtml(p) +
         '</div>' +
         '<div class="popup__body">' +
           '<h2 class="popup__title">🌸 חדש ורלוונטי עכשיו</h2>' +
